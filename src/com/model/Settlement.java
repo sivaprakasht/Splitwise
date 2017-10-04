@@ -1,12 +1,12 @@
 package com.model;
 
-public class Splits {
+public class Settlement {
 
-    public Splits(){
+    public Settlement(){
 
     }
 
-    public Splits(Friend from, Friend to, int amount){
+    public Settlement(Friend from, Friend to, int amount){
         this.from = from;
         this.to = to;
         this.amount = amount;
@@ -42,7 +42,7 @@ public class Splits {
         this.amount = amount;
     }
 
-    public String getSplitReport(){
+    public String getSettlementReport(){
         return this.from.getName() + " -> "+ this.to.getName() + " : " + this.amount;
     }
 }

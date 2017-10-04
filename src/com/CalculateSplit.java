@@ -2,7 +2,7 @@ package com;
 
 import com.model.Friend;
 import com.model.Spending;
-import com.model.Splits;
+import com.model.Settlement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +56,8 @@ public class CalculateSplit {
         return updatedSpendings;
     }
 
-    private List<Splits> getSplits(List<Spending> spendings) {
-        List<Splits> splitsList = new ArrayList<>();
+    private List<Settlement> getSplits(List<Spending> spendings) {
+        List<Settlement> splitsList = new ArrayList<>();
         for (int i = 0; i < spendings.size(); i++) {
             while (spendings.get(i).getBalance() > 0) {
                 for (int j = 0; j < spendings.size(); j++) {
@@ -75,7 +75,7 @@ public class CalculateSplit {
                             }
 
                             spendings.get(i).setBalance(balanceAmount);
-                            Splits splits = new Splits(spendings.get(i).getWho(), spendings.get(j).getWho(), settledAmount);
+                            Settlement splits = new Settlement(spendings.get(i).getWho(), spendings.get(j).getWho(), settledAmount);
                             splitsList.add(splits);
                         }
                     }
@@ -88,13 +88,24 @@ public class CalculateSplit {
 
     public static void main(String a[]) {
         CalculateSplit calculateSplit = new CalculateSplit();
+        // Create List of friends from given input string.
         List<Friend> friends = calculateSplit.createFriends("A,B,C,D,E");
+
+        // Create List of spending from the input string.
         List<Spending> spendings = calculateSplit.createSpendings("A 300 Snack C 200 Tickets D 300 Taxi E 100 Others", friends);
+
+        // Identify the equal split amount.
         int splitAmount = calculateSplit.getTotalSpend(spendings) / friends.size();
+
+        // Identify the balance amount of each friends to accept and give.
         spendings = calculateSplit.getBalanceUpdatedSpendings(spendings, splitAmount);
-        List<Splits> splitsList = calculateSplit.getSplits(spendings);
-        for (Splits splits: splitsList) {
-            System.out.println(splits.getSplitReport());
+
+        // Find list of settlement options.
+        List<Settlement> settlements = calculateSplit.getSplits(spendings);
+
+        // Print settlement report.
+        for (Settlement settlement: settlements) {
+            System.out.println(settlement.getSettlementReport());
         }
     }
 
